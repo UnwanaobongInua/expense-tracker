@@ -1,8 +1,10 @@
-amount = 40
-category = "transport"
-description = "lunch"
+expense = {
+  "amount": 12.5,
+  "category": "food",
+  "description": "lunch"
+}
 
 print("Expense recorded:")
-print("Amount:", amount)
-print("Category:", category)
-print("Description:", description)
+print("Amount:", expense["amount"])
+print("Category:", expense["category"])
+print("Description:", expense["description"])
