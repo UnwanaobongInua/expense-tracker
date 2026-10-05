@@ -1,4 +1,22 @@
-def add_expense(expense):
+import json
+import os
+
+FILENAME = os.path.join(os.path.dirname(__file__), "expenses.json")
+
+
+def load_expenses():
+    if os.path.exists(FILENAME):
+        with open(FILENAME, "r") as file:
+            return json.load(file)
+    return []
+
+
+def save_expenses(expenses):
+    with open(FILENAME, "w") as file:
+        json.dump(expenses, file, indent=2)
+
+
+def add_expense(expenses):
     amount = float(input("Amount: "))
     category = input("Category: ")
     description = input("Description: ")
@@ -15,31 +33,29 @@ def list_expenses(expenses):
     print("All expenses:")
     for expense in expenses:
         print(expense["amount"], "-", expense["category"], "-", expense["description"])
-    
-def total_spent(expense):
+
+
+def total_spent(expenses):
     total = 0
-    for expense in expenses:    
+    for expense in expenses:
         total = total + expense["amount"]
     return total
 
 
-expenses = [
-    {"amount": 12.5, "category": "food", "description": "lunch"},
-    {"amount": 40, "category": "transport", "description": "bus fare"},
-    {"amount": 8.75, "category": "food", "description": "coffee"},
-]
+expenses = load_expenses()
 
 while True:
-    print("\n--- Expense Tacker ---")
+    print("\n--- Expense Tracker ---")
     print("1. Add expense")
     print("2. List expenses")
     print("3. Show total")
     print("4. Quit")
 
-    choice = input("Choice an option (1-4): ")
+    choice = input("Choose an option (1-4): ")
 
     if choice == "1":
         add_expense(expenses)
+        save_expenses(expenses)
     elif choice == "2":
         list_expenses(expenses)
     elif choice == "3":
