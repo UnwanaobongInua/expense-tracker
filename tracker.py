@@ -5,6 +5,19 @@ expenses = [
     {"amount": 5.25, "category": "food", "description": "breakfast"},
 ]
 
+print("Add a new expense")
+amount = float(input("Amount: "))
+category = input("Category: ")
+description = input("Description: ")
+
+new_expense = {
+    "amount": amount,
+    "category": category,
+    "description": description,
+}
+expenses.append(new_expense)
+
+
 total = 0
 
 print("All expenses:")
@@ -14,5 +27,3 @@ for expense in expenses:
 
 
 print("Total:", total)
-
-print(len(expenses))
