@@ -15,9 +15,23 @@ def save_expenses(expenses):
     with open(FILENAME, "w") as file:
         json.dump(expenses, file, indent=2)
 
+def get_amount():
+    while True:
+        text = input("Amount: ")
+        try:
+            amount = float(text)
+        except ValueError:
+            print("Please enter a valid number, like 12.5")
+            continue
+
+        if amount <= 0:
+            print("Amount must be greater than zero.")
+            continue
+
+        return amount
 
 def add_expense(expenses):
-    amount = float(input("Amount: "))
+    amount = get_amount()
     category = input("Category: ")
     description = input("Description: ")
 
