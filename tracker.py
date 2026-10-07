@@ -55,17 +55,38 @@ def total_spent(expenses):
         total = total + expense["amount"]
     return total
 
-
 expenses = load_expenses()
+
+
+def category_summary(expense):
+    totals = {}
+    for expense in expenses:
+        category = expense["category"]
+        if category in totals:
+            totals[category] = totals[category] + expense["amount"]
+        else:
+            totals[category] = expense["amount"]
+    return totals
+
+def show_summary(expenses):
+    if not expenses:
+        print("No expenses yet.")
+        return
+
+    print("spending by category:")
+    totals = category_summary(expenses)
+    for category, total in totals.items():
+        print(category, "-", total)
 
 while True:
     print("\n--- Expense Tracker ---")
     print("1. Add expense")
     print("2. List expenses")
     print("3. Show total")
-    print("4. Quit")
+    print("4. Category summary")
+    print("5. Quit")
 
-    choice = input("Choose an option (1-4): ")
+    choice = input("Choose an option (1-5): ")
 
     if choice == "1":
         add_expense(expenses)
@@ -75,11 +96,12 @@ while True:
     elif choice == "3":
         print("Total:", total_spent(expenses))
     elif choice == "4":
+        show_summary(expenses)
+    elif choice == "5":
         print("Goodbye!")
         break
     else:
-        print("Invalid choice, please enter 1, 2, 3, or 4.")
-
+        print("Invalid choice, please enter a number from 1 to 5.")
     
 
 
