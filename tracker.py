@@ -1,9 +1,11 @@
 import json
 import os
+from datetime import date
 
 FILENAME = os.path.join(os.path.dirname(__file__), "expenses.json")
 
 
+# Load saved expenses from the file (empty list if there is no file yet)
 def load_expenses():
     if os.path.exists(FILENAME):
         with open(FILENAME, "r") as file:
@@ -11,10 +13,13 @@ def load_expenses():
     return []
 
 
+# Write the current list of expenses to the file
 def save_expenses(expenses):
     with open(FILENAME, "w") as file:
         json.dump(expenses, file, indent=2)
 
+
+# Keep asking until the user enters a valid, positive number
 def get_amount():
     while True:
         text = input("Amount: ")
@@ -30,12 +35,15 @@ def get_amount():
 
         return amount
 
+
+# Ask for the details of a new expense and add it to the list
 def add_expense(expenses):
     amount = get_amount()
-    category = input("Category: ")
+    category = input("Category: ").lower()
     description = input("Description: ")
 
     new_expense = {
+        "date": date.today().isoformat(),
         "amount": amount,
         "category": category,
         "description": description,
@@ -43,22 +51,31 @@ def add_expense(expenses):
     expenses.append(new_expense)
 
 
+# Print every expense, one per line
 def list_expenses(expenses):
     print("All expenses:")
     for expense in expenses:
-        print(expense["amount"], "-", expense["category"], "-", expense["description"])
+        print(
+            expense.get("date", "no date"),
+            "-",
+            expense["amount"],
+            "-",
+            expense["category"],
+            "-",
+            expense["description"],
+        )
 
 
+# Add up the amount of every expense
 def total_spent(expenses):
     total = 0
     for expense in expenses:
         total = total + expense["amount"]
     return total
 
-expenses = load_expenses()
 
-
-def category_summary(expense):
+# Build a dictionary of total spending per category
+def category_summary(expenses):
     totals = {}
     for expense in expenses:
         category = expense["category"]
@@ -68,15 +85,20 @@ def category_summary(expense):
             totals[category] = expense["amount"]
     return totals
 
+
+# Print the spending totals for each category
 def show_summary(expenses):
     if not expenses:
         print("No expenses yet.")
         return
 
-    print("spending by category:")
+    print("Spending by category:")
     totals = category_summary(expenses)
     for category, total in totals.items():
         print(category, "-", total)
+
+
+expenses = load_expenses()
 
 while True:
     print("\n--- Expense Tracker ---")
@@ -102,8 +124,3 @@ while True:
         break
     else:
         print("Invalid choice, please enter a number from 1 to 5.")
-    
-
-
-
-
